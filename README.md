@@ -39,11 +39,27 @@ npm install
 
 ### Configure environment
 
-Copy `.env.example` to `.env.local` and fill in the values from the relevant service dashboards. Keep secret keys private and do not commit `.env.local`.
+Keep `.env.example` as a template. Copy it to `.env.local`, then replace each blank value with your own project credentials or settings. Do not put real credentials in `.env.example`, and do not commit `.env.local`.
 
 ```bash
 cp .env.example .env.local
 ```
+
+| Variable | What to enter |
+| --- | --- |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | The Sanity project ID from the project's Sanity settings. This is public configuration. |
+| `NEXT_PUBLIC_SANITY_DATASET` | The dataset name this app should read, such as your development dataset. This is public configuration. |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | The publishable key from Clerk Dashboard → **API keys**. Use the development key locally. It is designed to be exposed to the browser. |
+| `CLERK_SECRET_KEY` | The secret key from the same Clerk API keys page. Keep it server-only; never add a `NEXT_PUBLIC_` prefix. |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | The sign-in route in this app. Keep `/sign-in` unless you change the route. |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | The sign-up route in this app. Keep `/sign-up` unless you change the route. |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL` | Where to send a user after sign-in when no return URL is set. `/` sends them to the home page. |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL` | Where to send a user after sign-up when no return URL is set. `/` sends them to the home page. |
+| `SANITY_API_READ_TOKEN` | A read-only Viewer API token from Sanity Manage → **API** → **Tokens**. Server-only; do not expose it to the browser. |
+| `SANITY_CONTEXT_MCP_URL` | The endpoint URL for the Sanity Context MCP used by the search API. Use the URL supplied by your Sanity Context setup; keep it server-only. |
+| `OPENAI_API_KEY` | An API key from your OpenAI platform account for the search integration. Server-only; do not expose or commit it. |
+
+Values beginning with `NEXT_PUBLIC_` are included in the browser bundle, so only put public keys and non-secret settings in them. Keep all other credentials private. After editing `.env.local`, restart the development server for the changes to take effect.
 
 ### Run the web app
 
