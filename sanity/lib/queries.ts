@@ -71,6 +71,21 @@ export const COURSE_BY_SLUG_QUERY = defineQuery(`
 `);
 
 /** Slugs for generateStaticParams. */
+export const LESSONS_LIST_QUERY = defineQuery(`
+  *[_type == "lesson" && defined(slug.current)] | order(title asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    duration,
+    thumbnail,
+    "course": *[_type == "course" && references(^._id)][0]{
+      _id,
+      title,
+      "slug": slug.current
+    }
+  }
+`);
+
 export const LESSON_SLUGS_QUERY = defineQuery(`
   *[_type == "lesson" && defined(slug.current)]{"slug": slug.current}
 `);
@@ -169,6 +184,19 @@ export const INSTRUCTOR_BY_SLUG_QUERY = defineQuery(`
     expertise,
     bio,
     "courses": *[_type == "course" && instructor._ref == ^._id] | order(title asc) {
+      ${COURSE_CARD_FIELDS}
+    }
+  }
+`);
+
+/** Category detail. */
+export const CATEGORY_BY_SLUG_QUERY = defineQuery(`
+  *[_type == "category" && slug.current == $slug][0]{
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    "courses": *[_type == "course" && category._ref == ^._id] | order(title asc) {
       ${COURSE_CARD_FIELDS}
     }
   }
